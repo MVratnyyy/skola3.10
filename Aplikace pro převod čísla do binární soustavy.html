@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>Prevod do binarni</title>
+<style>
+.title {
+color: blue;
+font-size: 22px;
+font-family: 'Courier New', Courier, monospace;
+}
+</style>
+</head>
+<body>
+<label>Zadej cislo:</label>
+<input type="number" id="numberInput">
+<button id="btnConvert">Prevod</button>
+<div id="outputBinary"></div>
+
+<script>
+btnConvert = document.getElementById("btnConvert");
+btnConvert.onclick = function() {
+numberInput = document.getElementById("numberInput").value;
+outputBinary = document.getElementById("outputBinary");
+outputBinary.innerHTML = parseInt(numberInput).toString(2);
+};
+</script>
+</body>
+</html>

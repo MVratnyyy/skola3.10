@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piškvorky</title>
+    <style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Piškvorky</h1>
+    <div class="board" id="board"></div>
+    <p id="result"></p>
+
+    <script>
+        const board = document.getElementById("board");
+        const result = document.getElementById("result");
+        let currentPlayer = "X";
+        let gameOver = false;
+
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
+            cell.dataset.index = i;
+            cell.addEventListener("click", () => makeMove(cell));
+            board.appendChild(cell);
+        }
+
+        function makeMove(cell) {
+            if (gameOver || cell.textContent !== "") return;
+
+            cell.textContent = currentPlayer;
+
+            if (checkWin()) {
+                result.textContent = `Hráč ${currentPlayer} vyhrál!`;
+                gameOver = true;
+            } else if (checkDraw()) {
+                result.textContent = "Remíza!";
+                gameOver = true;
+            } else {
+                currentPlayer = currentPlayer === "X" ? "O" : "X";
+            }
+        }
+
+        function checkWin() {
+            const cells = document.querySelectorAll(".cell");
+            const winningCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6],
+            ];
+
+            for (const combination of winningCombinations) {
+                const [a, b, c] = combination;
+                if (
+                    cells[a].textContent &&
+                    cells[a].textContent === cells[b].textContent &&
+                    cells[a].textContent === cells[c].textContent
+                ) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function checkDraw() {
+            const cells = document.querySelectorAll(".cell");
+            for (const cell of cells) {
+                if (cell.textContent === "") {
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>
